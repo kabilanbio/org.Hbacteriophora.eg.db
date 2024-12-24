@@ -11,8 +11,7 @@ vignette: >
 
 # Introduction
 
-This package provides annotation data for the *Heterorhabditis bacteriophora* organism. It includes gene information, functional annotations, and mappings to various biological databases, derived from the NCBI gene information system.
-
+This package provides annotation data for the *Heterorhabditis bacteriophora* organism. It includes gene information, functional annotations, and kegg pathway information derived from the Wormbase Parasite and various other biological databases.
 ```r
 # Installation
 if (!requireNamespace("BiocManager", quietly = TRUE))
@@ -28,18 +27,14 @@ library(org.Hbacteriophora.eg.db)
 ```r
 #Accessing Gene Information
 columns(org.Hbacteriophora.eg.db)  # List available fields
-keys <- head(keys(org.Hbacteriophora.eg.db, keytype="ENTREZID"))  # Get sample gene IDs
-select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GENENAME", "SYMBOL"), keytype="ENTREZID")
+keys <- head(keys(org.Hbacteriophora.eg.db, keytype="GID"))  # Get sample gene IDs
+select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GENENAME", "SYMBOL"), keytype="GID")
 ```
 
 ```r
 #Querying GO Terms
-select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GO", "ONTOLOGY"), keytype="ENTREZID")
+select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GO", "ONTOLOGY"), keytype="GID")
 ```
-
-Reference:
-
-NCBI: https://www.ncbi.nlm.nih.gov/
 
 ```r
 sessionInfo()
