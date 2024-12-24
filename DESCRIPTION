@@ -1,17 +1,17 @@
 Package: org.Hbacteriophora.eg.db
 Title: Genome wide annotation for Heterorhabditis bacteriophora
-Description: Genome wide annotation for Heterorhabditis bacteriophora, primarily based on mapping using Entrez Gene identifiers.
+Description: Genome wide annotation for Heterorhabditis bacteriophora, primarily based on mapping using Gene identifiers.
 Version: 0.99.0
-Authors@R: c(
-  person("Lalson Wesly", "Johnson", email = "WESLYJOHNZEN@gmail.com", role = "aut"),
-  person("Kabilan", "S", email = "kabilan151414@gmail.com", role = c("aut", "cre")))
+Authors@R: c(person("Lalson Wesly Johnson",  role = "aut",   email = "WESLYJOHNZEN@gmail.com"), person("Kabilan","S",  role = "cre",   ORCID = "0009-0002-9422-0938", email = "kabilan151414@gmail.com"))
 Maintainer: Kabilan S <kabilan151414@gmail.com>
-Depends: R (>= 4.4.0), methods, AnnotationDbi (>= 1.66.0)
+Depends: R (>= 4.4.0), methods, AnnotationDbi (>= 1.67.0)
 Imports: AnnotationHub
-Suggests: DBI, annotate, RUnit,knitr, rmarkdown
-VignetteBuilder: knitr
+Suggests: knitr, DBI, annotate, RUnit
 License: Artistic-2.0
 organism: Heterorhabditis bacteriophora
 species: Heterorhabditis bacteriophora
-biocViews: OrgDb, AnnotationData, AnnotationHub
+biocViews: OrgDb, AnnotationHub, AnnotationData
+URL: https://github.com/kabilanbio/org.Hbacteriophora.eg.db
+BugReports: https://github.com/kabilanbio/org.Hbacteriophora.eg.db/issues
+VignetteBuilder: knitr
 RoxygenNote: 7.3.2

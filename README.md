@@ -1,2 +1,2 @@
 # Hbacteriophora
-Genome wide annotation for Heterorhabditis bacteriophora, primarily based on mapping using Entrez Gene identifiers.
+Genome wide annotation for Heterorhabditis bacteriophora, primarily based on mapping using Gene identifiers.

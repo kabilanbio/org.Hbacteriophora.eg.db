@@ -1,0 +1,3 @@
+-org.Hbacteriophora.eg.db 0.99.0 (December 25, 2024)
+
+-Initial release of the package.
