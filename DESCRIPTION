@@ -2,7 +2,7 @@ Package: org.Hbacteriophora.eg.db
 Title: Genome wide annotation for Heterorhabditis bacteriophora
 Description: Genome wide annotation for Heterorhabditis bacteriophora, primarily based on mapping using Gene identifiers.
 Version: 0.99.0
-Authors@R: c(person("Lalson Wesly Johnson",  role = "aut",   email = "WESLYJOHNZEN@gmail.com"), person("Kabilan","S",  role = "cre",   ORCID = "0009-0002-9422-0938", email = "kabilan151414@gmail.com"))
+Authors@R: c(person("Lalson Wesly Johnson",  role = "aut",   email = "WESLYJOHNZEN@gmail.com"), person("Kabilan","S",  role = "cre",  email = "kabilan151414@gmail.com"))
 Maintainer: Kabilan S <kabilan151414@gmail.com>
 Depends: R (>= 4.4.0), methods, AnnotationDbi (>= 1.67.0)
 Imports: AnnotationHub
