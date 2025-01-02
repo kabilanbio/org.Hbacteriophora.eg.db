@@ -16,12 +16,17 @@ This package provides annotation data for the *Heterorhabditis bacteriophora* or
 # Installation
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install("org.Hbacteriophora.eg")
+BiocManager::install("org.Hbacteriophora.eg.db")
 ```
 
 ```r
 #Loading the Package
 library(org.Hbacteriophora.eg.db)
+```
+
+```r
+# List all supported key types
+keytypes(org.Hbacteriophora.eg.db)
 ```
 
 ```r
@@ -34,6 +39,17 @@ select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GENENAME", "SYMBOL"), key
 ```r
 #Querying GO Terms
 select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GO", "ONTOLOGY"), keytype="GID")
+```
+
+```r
+# Extracting GO terms for Biological Process
+select(org.Hbacteriophora.eg.db, keys=keys, columns="GO", keytype="GID") %>%
+  dplyr::filter(ONTOLOGY == "BP")
+```
+
+```r
+# Querying KEGG Pathway Information
+select(org.Hbacteriophora.eg.db, keys=keys, columns="KEGG_Pathway", keytype="GID")
 ```
 
 ```r

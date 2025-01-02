@@ -1,3 +1,9 @@
--org.Hbacteriophora.eg.db 0.99.0 (December 25, 2024)
+# NEWS for org.Hbacteriophora.eg.db Package
 
--Initial release of the package.
+Version 0.99.0 (2025-01-01)
+--------------------------
+### Initial Release
+- Added gene annotations for *Heterorhabditis bacteriophora*.
+- Integrated data from WormBase Parasite, KEGG, and Gene Ontology.
+- Provided functionality to query GO terms, KEGG pathways, and gene symbols.
+- Included vignette for usage examples and documentation.
