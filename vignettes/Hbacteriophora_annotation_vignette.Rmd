@@ -1,0 +1,63 @@
+---
+title: "Annotation Package for Heterorhabditis bacteriophora"
+author: "Lalson Wesly Johnson"
+date: "`r Sys.Date()`"
+output: BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{Annotation Package for Heterorhabditis bacteriophora}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+This package provides annotation data for the *Heterorhabditis bacteriophora* organism. It includes gene information, functional annotations, and kegg pathway information derived from the Wormbase Parasite and various other biological databases.
+```{r eval=FALSE}
+# Installation
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("org.Hbacteriophora.eg.db")
+```
+
+## Loading packages
+```{r eval=FALSE}
+#Loading the Package
+library(org.Hbacteriophora.eg.db)
+library(magrittr)
+```
+## Supported key types
+```{r eval=FALSE}
+# List all supported key types
+keytypes(org.Hbacteriophora.eg.db)
+```
+
+## Accessing Gene Information
+```{r eval=FALSE}
+#Accessing Gene Information
+keys <- head(keys(org.Hbacteriophora.eg.db, keytype="GID"))  # Get sample gene IDs
+select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GENENAME", "SYMBOL"), keytype="GID")
+```
+
+## Querying GO Terms
+```{r eval=FALSE}
+#Querying GO Terms
+select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GO", "ONTOLOGY"), keytype="GID")
+```
+
+## Extracting GO terms for Biological Process
+```{r eval=FALSE}
+# Extracting GO terms for Biological Process
+select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GO", "ONTOLOGY"), keytype="GID") %>%
+  dplyr::filter(ONTOLOGY == "BP")
+```
+## Querying KEGG Pathway Information
+```{r eval=FALSE}
+# Querying KEGG Pathway Information
+select(org.Hbacteriophora.eg.db, keys=keys, columns="KEGGPATHWAY", keytype="GID")
+```
+
+## Session Info
+```{r}
+sessionInfo()
+```
+
