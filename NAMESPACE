@@ -1,0 +1,16 @@
+import(methods)
+import(AnnotationDbi)
+
+### Only put what is statically exported here. All the AnnObj instances
+### created at load time are dynamically exported (refer to R/zzz.R for
+### the details).
+export(
+    org.Hbacteriophora.eg,
+    org.Hbacteriophora.eg_dbconn,
+    org.Hbacteriophora.eg_dbfile,
+    org.Hbacteriophora.eg_dbschema,
+    org.Hbacteriophora.eg_dbInfo,
+
+    org.Hbacteriophora.egORGANISM
+)
+
