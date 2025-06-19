@@ -18,6 +18,7 @@ Species: Heterorhabditis bacteriophora
 biocViews: OrgDb, AnnotationHub, AnnotationData
 URL: https://github.com/kabilanbio/org.Hbacteriophora.eg.db
 BugReports: https://github.com/kabilanbio/org.Hbacteriophora.eg.db/issues
+LazyData: false
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 NeedsCompilation: no
