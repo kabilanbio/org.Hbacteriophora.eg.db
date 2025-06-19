@@ -2,7 +2,7 @@ Package: org.Hbacteriophora.eg.db
 Title: Genome-wide Annotation for Heterorhabditis bacteriophora
 Description: Provides genome-wide annotation for Heterorhabditis bacteriophora, 
     primarily based on mapping using custom gene identifiers. 
-    This OrgDb package is intended for use with AnnotationDbi-based tools and supports 
+    This OrgDb annotation package is intended for use with AnnotationDbi-based tools and supports 
     querying of gene identifiers and related metadata.
 Version: 0.99.0
 Authors@R: 
