@@ -26,20 +26,9 @@ org.Hbacteriophora.eg_dbInfo <- function() AnnotationDbi::dbInfo(datacache)
 org.Hbacteriophora.egORGANISM <- "Heterorhabditis bacteriophora"
 
 .onLoad <- function(libname, pkgname) {
-  # Skip during package installation/build
-  if (nzchar(Sys.getenv("R_INSTALL_PKG")) || nzchar(Sys.getenv("R_PACKAGE_BUILDING"))) {
-    assign("dbfile", "", envir = datacache)
-    return(invisible())
-  }
-
-  # 1. First try bundled database in extdata
-  dbfile <- system.file("extdata", "org.Hbacteriophora.eg.sqlite",
-                        package = pkgname, lib.loc = libname)
-
-  # Helper function to validate database
+  # Internal helper: check DB validity
   is_db_valid <- function(dbf) {
     if (!file.exists(dbf)) return(FALSE)
-
     con <- NULL
     valid <- FALSE
     tryCatch({
@@ -54,51 +43,48 @@ org.Hbacteriophora.egORGANISM <- "Heterorhabditis bacteriophora"
     valid
   }
 
-  # 2. If bundled DB is missing or invalid, download from Zenodo
+  # If building or installing package, skip DB connection
+  if (nzchar(Sys.getenv("R_INSTALL_PKG")) || nzchar(Sys.getenv("R_PACKAGE_BUILDING"))) {
+    assign("dbfile", "", envir = datacache)
+    return(invisible())
+  }
+
+  # Define user cache directory
+  cache_dir <- tools::R_user_dir("org.Hbacteriophora.eg", which = "cache")
+  dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
+  dbfile <- file.path(cache_dir, "org.Hbacteriophora.eg.sqlite")
+
   zenodo_url <- "https://zenodo.org/records/15692332/files/org.Hbacteriophora.eg.sqlite"
 
-  if (!file.exists(dbfile) || !is_db_valid(dbfile)) {
-    # Create temp file for download
-    dbfile <- tempfile(fileext = ".sqlite")
-    message("Downloading database from Zenodo (this may take several minutes)...")
+  # Download only if needed
+  if (!is_db_valid(dbfile)) {
+    message("Database not found or invalid. Downloading from Zenodo...")
 
     tryCatch({
-      # Use curl with longer timeout and resume capability
-      curl_opts <- list(
-        connecttimeout = 300000,
-        timeout = 600000,
-        resume_from = if (file.exists(dbfile)) file.info(dbfile)$size else NULL
-      )
-
-      # Try download with curl first
       if (requireNamespace("curl", quietly = TRUE)) {
         curl::curl_download(
-          zenodo_url,
-          dbfile,
+          url = zenodo_url,
+          destfile = dbfile,
           mode = "wb",
           handle = curl::new_handle(CONNECTTIMEOUT = 300, TIMEOUT = 600)
         )
       } else {
-        # Fallback to utils::download.file with increased timeout
-        options(timeout = max(6000000, getOption("timeout")))
+        options(timeout = max(600, getOption("timeout")))
         utils::download.file(zenodo_url, dbfile, mode = "wb", quiet = FALSE)
       }
 
       if (!is_db_valid(dbfile)) {
         file.remove(dbfile)
-        stop("Downloaded database is invalid")
+        stop("Downloaded file is invalid.")
       }
     }, error = function(e) {
       if (file.exists(dbfile)) file.remove(dbfile)
-      stop("Failed to download database. You can:\n",
-           "1. Try again later when you have better internet connection\n",
-           "2. Manually download from:\n", zenodo_url, "\n",
-           "   and place it in:", system.file(package = pkgname),
-           call. = FALSE)
+      stop("Database download failed.\nYou can manually download it from:\n", zenodo_url,
+           "\nand place it at:\n", dbfile, call. = FALSE)
     })
   }
 
-  # Initialize database connection
+  # Establish connection and load DB
   tryCatch({
     assign("dbfile", dbfile, envir = datacache)
     dbconn <- AnnotationDbi::dbFileConnect(dbfile)
@@ -111,12 +97,12 @@ org.Hbacteriophora.egORGANISM <- "Heterorhabditis bacteriophora"
     namespaceExport(ns, dbNewname)
 
     packageStartupMessage(
-      sprintf("%s.db loaded successfully\nSource: %s",
+      sprintf("%s.db loaded successfully\nDB Source: %s",
               sub(".db$", "", pkgname),
-              ifelse(grepl("temp", dbfile), "Zenodo", "bundled package"))
+              dbfile)
     )
   }, error = function(e) {
-    stop("Failed to initialize database: ", conditionMessage(e), call. = FALSE)
+    stop("Failed to initialize the annotation database: ", conditionMessage(e), call. = FALSE)
   })
 }
 
