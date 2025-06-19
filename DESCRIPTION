@@ -1,0 +1,26 @@
+Package: org.Hbacteriophora.eg.db
+Title: Genome-wide Annotation for Heterorhabditis bacteriophora
+Description: Provides genome-wide annotation for Heterorhabditis bacteriophora, 
+    primarily based on mapping using custom gene identifiers. 
+    This OrgDb package is intended for use with AnnotationDbi-based tools and supports 
+    querying of gene identifiers and related metadata.
+Version: 0.99.0
+Authors@R: 
+    c(person("Lalson Wesly", "Johnson", email = "WESLYJOHNZEN@gmail.com", role = c("aut")),
+      person("Kabilan", "S", email = "kabilan151414@gmail.com", role = c("cre")))
+Maintainer: Kabilan S <kabilan151414@gmail.com>
+Depends: R (>= 2.7.0), methods, AnnotationDbi (>= 1.68.0)
+Imports: AnnotationHub, rappdirs, rmarkdown, magrittr, BiocStyle, dplyr
+Suggests: knitr, DBI, annotate, RUnit
+License: Artistic-2.0
+Organism: Heterorhabditis bacteriophora
+Species: Heterorhabditis bacteriophora
+biocViews: OrgDb, AnnotationHub, AnnotationData
+URL: https://github.com/kabilanbio/org.Hbacteriophora.eg.db
+BugReports: https://github.com/kabilanbio/org.Hbacteriophora.eg.db/issues
+VignetteBuilder: knitr
+RoxygenNote: 7.3.2
+NeedsCompilation: no
+Packaged: 2025-06-10 05:26:28 UTC; kabil
+Author: Lalson Wesly Johnson [aut],
+  Kabilan S [cre]
