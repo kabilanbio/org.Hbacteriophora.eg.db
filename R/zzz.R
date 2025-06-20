@@ -26,7 +26,20 @@ org.Hbacteriophora.eg_dbInfo <- function() AnnotationDbi::dbInfo(datacache)
 org.Hbacteriophora.egORGANISM <- "Heterorhabditis bacteriophora"
 
 .onLoad <- function(libname, pkgname) {
-  # Internal helper: check DB validity
+  if (nzchar(Sys.getenv("R_INSTALL_PKG")) || nzchar(Sys.getenv("R_PACKAGE_BUILDING"))) {
+    assign("dbfile", "", envir = datacache)
+    return(invisible())
+  }
+
+  # 1. Use bundled database if exists
+  dbfile <- system.file("extdata", "org.Hbacteriophora.eg.sqlite",
+                        package = pkgname, lib.loc = libname)
+
+  # 2. Define persistent local cache path
+  cache_dir <- tools::R_user_dir(pkgname, which = "cache")
+  if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
+  persistent_dbfile <- file.path(cache_dir, "org.Hbacteriophora.eg.sqlite")
+
   is_db_valid <- function(dbf) {
     if (!file.exists(dbf)) return(FALSE)
     con <- NULL
@@ -43,48 +56,44 @@ org.Hbacteriophora.egORGANISM <- "Heterorhabditis bacteriophora"
     valid
   }
 
-  # If building or installing package, skip DB connection
-  if (nzchar(Sys.getenv("R_INSTALL_PKG")) || nzchar(Sys.getenv("R_PACKAGE_BUILDING"))) {
-    assign("dbfile", "", envir = datacache)
-    return(invisible())
-  }
-
-  # Define user cache directory
-  cache_dir <- tools::R_user_dir("org.Hbacteriophora.eg", which = "cache")
-  dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
-  dbfile <- file.path(cache_dir, "org.Hbacteriophora.eg.sqlite")
-
-  zenodo_url <- "https://zenodo.org/records/15692332/files/org.Hbacteriophora.eg.sqlite"
-
-  # Download only if needed
+  # 3. If bundled DB is invalid, check or download to persistent location
   if (!is_db_valid(dbfile)) {
-    message("Database not found or invalid. Downloading from Zenodo...")
+    dbfile <- persistent_dbfile
 
-    tryCatch({
-      if (requireNamespace("curl", quietly = TRUE)) {
-        curl::curl_download(
-          url = zenodo_url,
-          destfile = dbfile,
-          mode = "wb",
-          handle = curl::new_handle(CONNECTTIMEOUT = 300, TIMEOUT = 600)
-        )
-      } else {
-        options(timeout = max(600, getOption("timeout")))
-        utils::download.file(zenodo_url, dbfile, mode = "wb", quiet = FALSE)
-      }
+    zenodo_url <- "https://zenodo.org/records/15692332/files/org.Hbacteriophora.eg.sqlite"
 
-      if (!is_db_valid(dbfile)) {
-        file.remove(dbfile)
-        stop("Downloaded file is invalid.")
-      }
-    }, error = function(e) {
-      if (file.exists(dbfile)) file.remove(dbfile)
-      stop("Database download failed.\nYou can manually download it from:\n", zenodo_url,
-           "\nand place it at:\n", dbfile, call. = FALSE)
-    })
+    if (!is_db_valid(dbfile)) {
+      message("Downloading H. bacteriophora annotation database (once per system)...")
+
+      tryCatch({
+        if (requireNamespace("curl", quietly = TRUE)) {
+          curl::curl_download(
+            zenodo_url,
+            dbfile,
+            mode = "wb",
+            handle = curl::new_handle(CONNECTTIMEOUT = 300, TIMEOUT = 600)
+          )
+        } else {
+          options(timeout = max(6000000, getOption("timeout")))
+          utils::download.file(zenodo_url, dbfile, mode = "wb", quiet = FALSE)
+        }
+
+        if (!is_db_valid(dbfile)) {
+          file.remove(dbfile)
+          stop("Downloaded database is invalid.")
+        }
+      }, error = function(e) {
+        if (file.exists(dbfile)) file.remove(dbfile)
+        stop("Failed to download database. You can:\n",
+             "1. Try again later when you have better internet connection\n",
+             "2. Manually download from:\n", zenodo_url, "\n",
+             "   and place it in:", cache_dir,
+             call. = FALSE)
+      })
+    }
   }
 
-  # Establish connection and load DB
+  # 4. Initialize connection
   tryCatch({
     assign("dbfile", dbfile, envir = datacache)
     dbconn <- AnnotationDbi::dbFileConnect(dbfile)
@@ -97,12 +106,12 @@ org.Hbacteriophora.egORGANISM <- "Heterorhabditis bacteriophora"
     namespaceExport(ns, dbNewname)
 
     packageStartupMessage(
-      sprintf("%s.db loaded successfully\nDB Source: %s",
+      sprintf("%s.db loaded successfully\nSource: %s",
               sub(".db$", "", pkgname),
-              dbfile)
+              ifelse(grepl("cache", dbfile), "Zenodo cache", "bundled package"))
     )
   }, error = function(e) {
-    stop("Failed to initialize the annotation database: ", conditionMessage(e), call. = FALSE)
+    stop("Failed to initialize database: ", conditionMessage(e), call. = FALSE)
   })
 }
 
