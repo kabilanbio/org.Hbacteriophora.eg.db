@@ -16,42 +16,50 @@ This package provides annotation data for the *Heterorhabditis bacteriophora* or
 # Installation
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install("org.Hbacteriophora.eg.db")
+BiocManager::install(version = "devel")
+if (!requireNamespace("AnnotationHub", quietly = TRUE))
+    install.packages("AnnotationHub")
 ```
 
 ## Loading packages
-```{r eval=FALSE}
+```{r}
 #Loading the Package
-library(org.Hbacteriophora.eg.db)
-library(magrittr)
+library(AnnotationHub)
 ```
+
+```{r}
+#Installing the org.Hbacteriophora.eg.db package
+ah <- AnnotationHub()
+org.Hbacteriophora.eg.db <- ah[["AH121717"]]
+```
+
 ## Supported key types
-```{r eval=FALSE}
+```{r}
 # List all supported key types
 keytypes(org.Hbacteriophora.eg.db)
 ```
 
 ## Accessing Gene Information
-```{r eval=FALSE}
+```{r}
 #Accessing Gene Information
 keys <- head(keys(org.Hbacteriophora.eg.db, keytype="GID"))  # Get sample gene IDs
 select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GENENAME", "SYMBOL"), keytype="GID")
 ```
 
 ## Querying GO Terms
-```{r eval=FALSE}
+```{r}
 #Querying GO Terms
 select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GO", "ONTOLOGY"), keytype="GID")
 ```
 
 ## Extracting GO terms for Biological Process
-```{r eval=FALSE}
+```{r}
 # Extracting GO terms for Biological Process
 select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GO", "ONTOLOGY"), keytype="GID") %>%
   dplyr::filter(ONTOLOGY == "BP")
 ```
 ## Querying KEGG Pathway Information
-```{r eval=FALSE}
+```{r}
 # Querying KEGG Pathway Information
 select(org.Hbacteriophora.eg.db, keys=keys, columns="KEGGPATHWAY", keytype="GID")
 ```
