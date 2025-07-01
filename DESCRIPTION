@@ -7,8 +7,10 @@ Description: Provides genome-wide annotation for Heterorhabditis bacteriophora,
 Version: 0.99.0
 Authors@R: 
     c(person("Lalson Wesly", "Johnson", email = "WESLYJOHNZEN@gmail.com", role = c("aut")),
-      person("Kabilan", "S", email = "kabilan151414@gmail.com", role = c("cre")))
-Maintainer: Kabilan S <kabilan151414@gmail.com>
+      person("Chaitra Ganapati","Bhat", email = "bhatchaitragm@gmail.com", role = c("aut")),
+      person("Adler","Dillman", email = "adlerd@ucr.edu", role = c("aut")),
+      person("Vishal Singh", "Somvanshi", email = "vishalsomvanshi@gmail.com", role = c("aut")),
+      person("Kabilan", "S", email = "kabilan151414@gmail.com", role = c("aut",cre")))
 Depends: R (>= 2.7.0), methods, AnnotationDbi (>= 1.68.0)
 Imports: AnnotationHub, DBI, RSQLite, curl
 Suggests: knitr, annotate, RUnit
@@ -23,5 +25,3 @@ VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 NeedsCompilation: no
 Packaged: 2025-06-10 05:26:28 UTC; kabil
-Author: Lalson Wesly Johnson [aut],
-  Kabilan S [cre]
