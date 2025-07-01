@@ -1,5 +1,5 @@
 ---
-title: "Annotation Package for Heterorhabditis bacteriophora"
+title: "Annotation Package for *Heterorhabditis bacteriophora*"
 author: "Lalson Wesly Johnson"
 date: "`r Sys.Date()`"
 output: BiocStyle::html_document
@@ -8,64 +8,78 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
 # Introduction
 
 This package provides annotation data for the *Heterorhabditis bacteriophora* organism. It includes gene information, functional annotations, and kegg pathway information derived from the Wormbase Parasite and various other biological databases.
 ```{r eval=FALSE}
 # Installation
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
 BiocManager::install(version = "devel")
-if (!requireNamespace("AnnotationHub", quietly = TRUE))
-    install.packages("AnnotationHub")
+if (!requireNamespace("AnnotationHub", quietly = TRUE)) {
+  install.packages("AnnotationHub")
+}
 ```
 
 ## Loading packages
 ```{r}
-#Loading the Package
+# Loading the Package
 library(AnnotationHub)
 ```
 
 ```{r}
-#Installing the org.Hbacteriophora.eg.db package
+# Installing the org.Hbacteriophora.eg.db package
 ah <- AnnotationHub()
 org.Hbacteriophora.eg.db <- ah[["AH121717"]]
 ```
 
 ## Supported key types
-```{r}
+```{r keytypes}
 # List all supported key types
 keytypes(org.Hbacteriophora.eg.db)
 ```
 
 ## Accessing Gene Information
-```{r}
-#Accessing Gene Information
-keys <- head(keys(org.Hbacteriophora.eg.db, keytype="GID"))  # Get sample gene IDs
-select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GENENAME", "SYMBOL"), keytype="GID")
+```{r genes}
+# Accessing Gene Information
+keys <- head(keys(org.Hbacteriophora.eg.db, 
+                  keytype = "GID")) # Get sample gene IDs
+select(org.Hbacteriophora.eg.db, 
+       keys = keys, 
+       columns = c("GENENAME", "SYMBOL"), 
+       keytype = "GID")
 ```
 
 ## Querying GO Terms
-```{r}
-#Querying GO Terms
-select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GO", "ONTOLOGY"), keytype="GID")
+```{r gos}
+# Querying GO Terms
+select(org.Hbacteriophora.eg.db, 
+       keys = keys, 
+       columns = c("GO", "ONTOLOGY"), 
+       keytype = "GID")
 ```
 
 ## Extracting GO terms for Biological Process
-```{r}
+```{r go_terms}
 # Extracting GO terms for Biological Process
-select(org.Hbacteriophora.eg.db, keys=keys, columns=c("GO", "ONTOLOGY"), keytype="GID") %>%
+select(org.Hbacteriophora.eg.db, 
+       keys = keys, 
+       columns = c("GO", "ONTOLOGY"), 
+       keytype = "GID") %>%
   dplyr::filter(ONTOLOGY == "BP")
 ```
 ## Querying KEGG Pathway Information
-```{r}
+```{r kegg}
 # Querying KEGG Pathway Information
-select(org.Hbacteriophora.eg.db, keys=keys, columns="KEGGPATHWAY", keytype="GID")
+select(org.Hbacteriophora.eg.db, 
+       keys = keys, 
+       columns = "KEGGPATHWAY", 
+       keytype = "GID")
 ```
 
 ## Session Info
-```{r}
+```{r session}
 sessionInfo()
 ```
 

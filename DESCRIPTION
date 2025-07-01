@@ -6,14 +6,14 @@ Description: Provides genome-wide annotation for Heterorhabditis bacteriophora,
     querying of gene identifiers and related metadata.
 Version: 0.99.0
 Authors@R: 
-    c(person("Lalson Wesly", "Johnson", email = "WESLYJOHNZEN@gmail.com", role = c("aut")),
-      person("Chaitra Ganapati","Bhat", email = "bhatchaitragm@gmail.com", role = c("aut")),
-      person("Adler","Dillman", email = "adlerd@ucr.edu", role = c("aut")),
+    c(person("Lalson Wesly", "Johnson", email = "WESLYJOHNZEN@gmail.com", role = c("aut"), comment=c(ORCID="0000-0001-9121-1927")),
+      person("Chaitra Ganapati", "Bhat", email = "bhatchaitragm@gmail.com", role = c("aut"), comment=c(ORCID="0000-0003-1497-890X")),
+      person("Adler", "Dillman", email = "adlerd@ucr.edu", role = c("aut"), comment=c(ORCID="0000-0001-7171-4332")),
       person("Vishal Singh", "Somvanshi", email = "vishalsomvanshi@gmail.com", role = c("aut")),
-      person("Kabilan", "S", email = "kabilan151414@gmail.com", role = c("aut",cre")))
-Depends: R (>= 2.7.0), methods, AnnotationDbi (>= 1.68.0)
-Imports: AnnotationHub, DBI, RSQLite, curl
-Suggests: knitr, annotate, RUnit
+      person("Kabilan", "S", email = "kabilan151414@gmail.com", role = c("aut", "cre"), comment=c(ORCID="0009-0002-9422-0938")))
+Depends: R (>= 4.5.0), methods, AnnotationDbi (>= 1.68.0)
+Imports: DBI
+Suggests: BiocStyle, knitr, annotate, RUnit, dplyr, AnnotationHub
 License: Artistic-2.0
 Organism: Heterorhabditis bacteriophora
 Species: Heterorhabditis bacteriophora

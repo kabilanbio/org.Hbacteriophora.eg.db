@@ -74,12 +74,18 @@
 
 \examples{
   library(DBI)
-  ## Count the number of rows in the "genes" table:
-  dbGetQuery(org.Hbacteriophora.eg_dbconn(), "SELECT COUNT(*) FROM genes")
+  library(AnnotationHub)
 
-  org.Hbacteriophora.eg_dbschema()
+  # Retrieve OrgDb from AnnotationHub
+  ah <- AnnotationHub()
+  orgdb <- ah[["AH121717"]]
 
-  org.Hbacteriophora.eg_dbInfo()
+  # Count rows in "genes" table
+  dbGetQuery(dbconn(orgdb), "SELECT COUNT(*) FROM genes")
+
+  # List tables and fields
+  dbListTables(dbconn(orgdb))
+  dbListFields(dbconn(orgdb), "genes")
 }
 
 \keyword{utilities}

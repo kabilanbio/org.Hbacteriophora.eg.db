@@ -14,5 +14,14 @@
   in a walkthrough on the bioconductor website as well as in the manual
   pages and vignettes in the AnnotationDbi package.
 }
+
+\examples{
+library(AnnotationHub)
+ah <- AnnotationHub()
+orgdb <- ah[["AH121717"]]
+keytypes(orgdb)
+head(keys(orgdb, keytype = "KEGGPATHWAY"))
+}
+
 \keyword{datasets}
 
