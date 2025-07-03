@@ -4,7 +4,7 @@ Description: Provides genome-wide annotation for Heterorhabditis bacteriophora,
     primarily based on mapping using custom gene identifiers. 
     This OrgDb annotation package is intended for use with AnnotationDbi-based tools and supports 
     querying of gene identifiers and related metadata.
-Version: 0.99.0
+Version: 0.99.1
 Authors@R: 
     c(person("Lalson Wesly", "Johnson", email = "WESLYJOHNZEN@gmail.com", role = c("aut"), comment=c(ORCID="0000-0001-9121-1927")),
       person("Chaitra Ganapati", "Bhat", email = "bhatchaitragm@gmail.com", role = c("aut"), comment=c(ORCID="0000-0003-1497-890X")),
